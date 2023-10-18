@@ -1,0 +1,157 @@
+  <!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>TuborgElfWebAR</title>
+    <link rel="shortcut icon" href="TemplateData/favicon.ico">
+    <link rel="stylesheet" href="TemplateData/style.css">
+    
+<script src = "sdk/blippar-webar-sdk-v1.6.3/webar-sdk/webar-sdk-v1.6.3.min.js?license-key=f6f2b8ab-20e4-4297-9004-6a5e5e76fa40"
+webar-mode="surface-tracking"
+static-camera = "true"
+auto-start="false"
+auto-init="false"
+enable-photo-ui="false"
+render-scene-on-desktop="false"
+show-qr-card-on-desktop="false"
+
+enable-tracking-on-desktop= "false"
+enable-mirroring-on-desktop= "false"
+auto-marker-detection ="true"
+show-guide-animation-url=""
+rendering-engine="unity"
+logo-src="images/ElfLogo.png"
+logo-height="200px"
+logo-width="200px"
+loading-progress-type="default"
+progress-dot-ring-scale="0.30"
+progress-dot-ring-color="#F7A400"
+progress-ring-scale="0.36"
+progress-ring-color="#F7A400"
+progress-ring-line-width="5"
+
+alert-border-color=""
+alert-border-width=""
+alert-border-radius=""
+alert-background-color=""
+alert-message-text-color=""
+alert-button-color=""
+alert-button-text-color=""
+alert-button-height=""
+alert-button-border-radius=""
+alert-box-font-size=""
+alert-box-height=""
+alert-box-width=""
+alert-camera-permission-text="Anmoder om adgang til kameraet"
+alert-camera-permission-button-text="Okay"
+alert-motion-permission-text="Anmoder om adgang til bevægelse og orientering"
+alert-motion-permission-button-text="Okay"
+    
+ui-background-color="#002850"
+ui-portrait-text="Den här upplevelsen är optimerad för porträttvisning"
+ui-text-color="#FFFFFF"
+desktop-logo-src="images/ElfLoading.png"
+desktop-logo-width="200px"
+desktop-logo-height="200px"
+issue-img-src="images/ElfLoading.png"
+issue-img-width="200px"
+issue-img-height="200px"
+
+auto-scan-instruction="Find a marker to scan..."
+auto-scan-instruction-detect="Marker detecting..."
+auto-scan-instruction-idle="Shake your phone to start detection"
+auto-scan-instruction-text-style="color: orange;"
+auto-scan-style="Display: block; position: absolute; top: 90%; left: 50%; transform: translate(-50%, -50%); z-index: 10000; width: auto; height: auto; text-alogn: center; "
+auto-scan-style-display="block"
+
+scan-btn-display="block"
+scan-btn-height="100px"
+scan-btn-width="100px"
+scan-btn-img-height="50"
+scan-btn-img-width="50"
+scan-btn-img-src="images/user_scan-btn-image_here.png"
+scan-btn-img-transform="translate(-25, -25)"
+scan-btn-img-x-coordinate="50%"
+scan-btn-img-y-coordinate="50%"
+
+scan-btn-instruction="Tap to scan"
+scan-btn-instruction-style="color: white;"
+scan-btn-progress-bar-color="blue"
+scan-btn-progress-bar-cx-coordinate="50"
+scan-btn-progress-bar-cy-coordinate="50"
+scan-btn-progress-bar-radius="35"
+scan-btn-progress-bar-transform="rotate(-90 50 50)"
+scan-btn-progress-circle-cx-coordinate="50%"
+scan-btn-progress-circle-cy-coordinate="50%"
+scan-btn-progress-circle-radius="35"
+scan-btn-progress-circle-style="fill: none; stroke: cyan; stroke-width: 6;"
+ios-camera-permission="true"
+auto-scan-instruction-idle-on-desktop=""
+
+show-guide-view="false"></script>
+
+  </head>
+  <body class="dark">
+      <div id="unity-container" class="unity-desktop">
+        <canvas id="unity-canvas" style="position: absolute;"></canvas>
+      </div>
+<script>
+
+var Yrotvalue = undefined;
+var UNITYINSTANCE = undefined;
+const cameraObjectName = "webarCamera";
+const stageObjectName = "webarStage";
+      const buildUrl = "Build";
+      const loaderUrl = buildUrl + "/WebAR-TuborgElfWebAR.loader.js";
+      const config = {
+        dataUrl: buildUrl + "/WebAR-TuborgElfWebAR.data.unityweb",
+        frameworkUrl: buildUrl + "/WebAR-TuborgElfWebAR.framework.js.unityweb",
+        codeUrl: buildUrl + "/WebAR-TuborgElfWebAR.wasm.unityweb",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "Khora",
+        productName: "TuborgElfWebAR",
+        productVersion: "0.1",
+      };
+
+      const container = document.querySelector("#unity-container");
+      const canvas = document.querySelector("#unity-canvas");
+
+      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        container.className = "unity-mobile";
+        config.devicePixelRatio = 3;
+      }
+      else {
+        // Desktop Unity Container: set the container/canvas for full screen
+        container.style.width = "100%";
+        container.style.height = "100%";
+        // Desktop style: Render the game canvas in a window that can be maximized to fullscreen:
+        canvas.style.width = window.innerWidth + 'px';
+        canvas.style.height = window.innerHeight + 'px';
+      }
+
+      const script = document.createElement("script");
+      script.src = loaderUrl;
+      script.onload = () => {
+        createUnityInstance(canvas, config, (progress) => {
+
+        }).then((unityInstance) => {
+          UNITYINSTANCE  = unityInstance;
+          }).catch((message) => {
+          alert(message);
+        });
+      };
+
+      //WEBAR SDK INIT function 
+      document.body.appendChild(script);
+	    function GetCommand(str){
+		        Yrotvalue=(str);
+        }
+
+    WEBARSDK.InitUnityWebGL(canvas.id, cameraObjectName, stageObjectName, canvas.clientWidth, canvas.clientHeight);
+      </script>
+	               <a id="TCBtn" href="https://www.tuborg.dk/drillenissekonkurrence" target="_blank" style="position: fixed;bottom: 2%; left: 5%;width: 23%;"><div style="width:1em; height:1em; display:inline-block"></div></a>
+				   <a id="WinLinkBtn" href="https://tuborg-dk.campaign.playable.com/julebryg" target="_blank" style="position: fixed;bottom: 36%; left: 38%;width: 24%;height:4%"><div style="width:1em; height:1em; display:inline-block"></div></a>
+  </body>
+</html>
